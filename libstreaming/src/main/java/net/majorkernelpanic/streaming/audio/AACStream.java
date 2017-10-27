@@ -1,21 +1,19 @@
 /*
- * Copyright (C) 2011-2014 GUIGUI Simon, fyhertz@gmail.com
- * 
+ * Copyright (C) 2011-2015 GUIGUI Simon, fyhertz@gmail.com
+ *
  * This file is part of libstreaming (https://github.com/fyhertz/libstreaming)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  * 
- * Spydroid is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 3 of the License, or
- * (at your option) any later version.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  * 
- * This source code is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- * 
- * You should have received a copy of the GNU General Public License
- * along with this source code; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package net.majorkernelpanic.streaming.audio;
@@ -26,7 +24,6 @@ import java.io.RandomAccessFile;
 import java.lang.reflect.Field;
 import java.net.InetAddress;
 import java.nio.ByteBuffer;
-
 import net.majorkernelpanic.streaming.SessionBuilder;
 import net.majorkernelpanic.streaming.rtp.AACADTSPacketizer;
 import net.majorkernelpanic.streaming.rtp.AACLATMPacketizer;
@@ -199,12 +196,7 @@ public class AACStream extends AudioStream {
 		((AACLATMPacketizer)mPacketizer).setSamplingRate(mQuality.samplingRate);
 
 		mAudioRecord = new AudioRecord(MediaRecorder.AudioSource.MIC, mQuality.samplingRate, AudioFormat.CHANNEL_IN_MONO, AudioFormat.ENCODING_PCM_16BIT, bufferSize);
-		try {
-			mMediaCodec = MediaCodec.createEncoderByType("audio/mp4a-latm");
-		} catch (IOException e){
-			Log.d(TAG, "Unable to instantiate a decoder, trying Google one...");
-			mMediaCodec = MediaCodec.createByCodecName("OMX.google.aac.encoder");
-		}
+		mMediaCodec = MediaCodec.createEncoderByType("audio/mp4a-latm");
 		MediaFormat format = new MediaFormat();
 		format.setString(MediaFormat.KEY_MIME, "audio/mp4a-latm");
 		format.setInteger(MediaFormat.KEY_BIT_RATE, mQuality.bitRate);
@@ -297,14 +289,12 @@ public class AACStream extends AudioStream {
 
 		String key = PREF_PREFIX+"aac-"+mQuality.samplingRate;
 
-		if (mSettings!=null) {
-			if (mSettings.contains(key)) {
-				String[] s = mSettings.getString(key, "").split(",");
-				mQuality.samplingRate = Integer.valueOf(s[0]);
-				mConfig = Integer.valueOf(s[1]);
-				mChannel = Integer.valueOf(s[2]);
-				return;
-			}
+		if (mSettings!=null && mSettings.contains(key)) {
+			String[] s = mSettings.getString(key, "").split(",");
+			mQuality.samplingRate = Integer.valueOf(s[0]);
+			mConfig = Integer.valueOf(s[1]);
+			mChannel = Integer.valueOf(s[2]);
+			return;
 		}
 
 		final String TESTFILE = Environment.getExternalStorageDirectory().getPath()+"/spydroid-test.adts";

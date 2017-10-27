@@ -10,7 +10,9 @@ import net.grandcentrix.thirtyinch.rx2.RxTiPresenterDisposableHandler;
 
 import pl.hypeapp.endoscope.view.QrCodeScannerView;
 
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Consumer;
+import io.reactivex.schedulers.Schedulers;
 
 public class QrCodeScannerPresenter extends TiPresenter<QrCodeScannerView> {
     private static final String CAMERA_PERMISSION = Manifest.permission.CAMERA;
@@ -42,6 +44,8 @@ public class QrCodeScannerPresenter extends TiPresenter<QrCodeScannerView> {
 
     public void askForPermission() {
         rxHelper.manageDisposable(rxPermissions.requestEach(CAMERA_PERMISSION)
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Consumer<Permission>() {
                     @Override
                     public void accept(Permission permission) throws Exception {

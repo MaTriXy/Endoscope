@@ -12,7 +12,9 @@ import net.majorkernelpanic.streaming.rtsp.RtspServer;
 
 import pl.hypeapp.endoscope.view.StartStreamView;
 
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Consumer;
+import io.reactivex.schedulers.Schedulers;
 
 
 public class StartStreamPresenter extends TiPresenter<StartStreamView> implements RtspServer.CallbackListener {
@@ -80,6 +82,8 @@ public class StartStreamPresenter extends TiPresenter<StartStreamView> implement
 
     private void askForCameraPermission() {
         rxHelper.manageDisposable(rxPermissions.requestEach(CAMERA_PERMISSION, RECORD_AUDIO_PERMISSION)
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Consumer<Permission>() {
                     @Override
                     public void accept(Permission permission) throws Exception {

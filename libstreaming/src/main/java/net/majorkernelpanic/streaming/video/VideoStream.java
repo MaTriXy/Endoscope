@@ -1,41 +1,23 @@
 /*
  * Copyright (C) 2011-2015 GUIGUI Simon, fyhertz@gmail.com
- * 
+ *
  * This file is part of libstreaming (https://github.com/fyhertz/libstreaming)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  * 
- * Spydroid is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 3 of the License, or
- * (at your option) any later version.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  * 
- * This source code is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- * 
- * You should have received a copy of the GNU General Public License
- * along with this source code; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package net.majorkernelpanic.streaming.video;
 
-import java.io.FileDescriptor;
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.ByteBuffer;
-import java.util.concurrent.Semaphore;
-import java.util.concurrent.TimeUnit;
-
-import net.majorkernelpanic.streaming.MediaStream;
-import net.majorkernelpanic.streaming.Stream;
-import net.majorkernelpanic.streaming.exceptions.CameraInUseException;
-import net.majorkernelpanic.streaming.exceptions.ConfNotSupportedException;
-import net.majorkernelpanic.streaming.exceptions.InvalidSurfaceException;
-import net.majorkernelpanic.streaming.gl.SurfaceView;
-import net.majorkernelpanic.streaming.hw.EncoderDebugger;
-import net.majorkernelpanic.streaming.hw.NV21Convertor;
-import net.majorkernelpanic.streaming.rtp.MediaCodecInputStream;
 import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
@@ -52,6 +34,23 @@ import android.util.Log;
 import android.view.Surface;
 import android.view.SurfaceHolder;
 import android.view.SurfaceHolder.Callback;
+
+import net.majorkernelpanic.streaming.MediaStream;
+import net.majorkernelpanic.streaming.Stream;
+import net.majorkernelpanic.streaming.exceptions.CameraInUseException;
+import net.majorkernelpanic.streaming.exceptions.ConfNotSupportedException;
+import net.majorkernelpanic.streaming.exceptions.InvalidSurfaceException;
+import net.majorkernelpanic.streaming.gl.SurfaceView;
+import net.majorkernelpanic.streaming.hw.EncoderDebugger;
+import net.majorkernelpanic.streaming.hw.NV21Convertor;
+import net.majorkernelpanic.streaming.rtp.MediaCodecInputStream;
+
+import java.io.FileDescriptor;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.ByteBuffer;
+import java.util.concurrent.Semaphore;
+import java.util.concurrent.TimeUnit;
 
 /** 
  * Don't use this class directly.
@@ -156,7 +155,7 @@ public abstract class VideoStream extends MediaStream {
 		if (mSurfaceHolderCallback != null && mSurfaceView != null && mSurfaceView.getHolder() != null) {
 			mSurfaceView.getHolder().removeCallback(mSurfaceHolderCallback);
 		}
-		if (mSurfaceView.getHolder() != null) {
+		if (mSurfaceView != null && mSurfaceView.getHolder() != null) {
 			mSurfaceHolderCallback = new Callback() {
 				@Override
 				public void surfaceDestroyed(SurfaceHolder holder) {
