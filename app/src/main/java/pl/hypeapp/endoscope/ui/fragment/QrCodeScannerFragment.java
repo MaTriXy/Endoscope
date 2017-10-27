@@ -10,17 +10,18 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.dlazaro66.qrcodereaderview.QRCodeReaderView;
-import com.tbruyelle.rxpermissions.RxPermissions;
+import com.tbruyelle.rxpermissions2.RxPermissions;
 
 import net.grandcentrix.thirtyinch.TiFragment;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 import pl.hypeapp.endoscope.R;
 import pl.hypeapp.endoscope.presenter.QrCodeScannerPresenter;
 import pl.hypeapp.endoscope.ui.activity.ConnectToStreamActivity;
 import pl.hypeapp.endoscope.view.QrCodeScannerView;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class QrCodeScannerFragment extends TiFragment<QrCodeScannerPresenter, QrCodeScannerView>
         implements QrCodeScannerView, QRCodeReaderView.OnQRCodeReadListener {

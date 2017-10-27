@@ -2,19 +2,19 @@ package pl.hypeapp.endoscope.presenter;
 
 import android.Manifest;
 
-import com.tbruyelle.rxpermissions.Permission;
-import com.tbruyelle.rxpermissions.RxPermissions;
+import com.tbruyelle.rxpermissions2.Permission;
+import com.tbruyelle.rxpermissions2.RxPermissions;
 
 import net.grandcentrix.thirtyinch.TiPresenter;
-import net.grandcentrix.thirtyinch.rx.RxTiPresenterSubscriptionHandler;
-import net.grandcentrix.thirtyinch.rx.RxTiPresenterUtils;
+import net.grandcentrix.thirtyinch.rx2.RxTiPresenterDisposableHandler;
 
 import pl.hypeapp.endoscope.view.QrCodeScannerView;
-import rx.functions.Action1;
+
+import io.reactivex.functions.Consumer;
 
 public class QrCodeScannerPresenter extends TiPresenter<QrCodeScannerView> {
     private static final String CAMERA_PERMISSION = Manifest.permission.CAMERA;
-    private final RxTiPresenterSubscriptionHandler rxHelper = new RxTiPresenterSubscriptionHandler(this);
+    private final RxTiPresenterDisposableHandler rxHelper = new RxTiPresenterDisposableHandler(this);
     private RxPermissions rxPermissions;
     private String ipAddress;
 
@@ -41,11 +41,10 @@ public class QrCodeScannerPresenter extends TiPresenter<QrCodeScannerView> {
     }
 
     public void askForPermission() {
-        rxHelper.manageSubscription(rxPermissions.requestEach(CAMERA_PERMISSION)
-                .compose(RxTiPresenterUtils.<Permission>deliverLatestToView(this))
-                .subscribe(new Action1<Permission>() {
+        rxHelper.manageDisposable(rxPermissions.requestEach(CAMERA_PERMISSION)
+                .subscribe(new Consumer<Permission>() {
                     @Override
-                    public void call(Permission permission) {
+                    public void accept(Permission permission) throws Exception {
                         if (permission.granted) {
                             onPermissionGranted();
                         } else if (permission.shouldShowRequestPermissionRationale) {

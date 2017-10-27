@@ -18,7 +18,7 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.tbruyelle.rxpermissions.RxPermissions;
+import com.tbruyelle.rxpermissions2.RxPermissions;
 
 import net.grandcentrix.thirtyinch.TiActivity;
 import net.majorkernelpanic.streaming.Session;
@@ -27,13 +27,6 @@ import net.majorkernelpanic.streaming.audio.AudioQuality;
 import net.majorkernelpanic.streaming.gl.SurfaceView;
 import net.majorkernelpanic.streaming.video.VideoQuality;
 
-import java.util.List;
-import java.util.Locale;
-
-import butterknife.BindView;
-import butterknife.BindViews;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 import pl.hypeapp.endoscope.R;
 import pl.hypeapp.endoscope.adapter.StartStreamPagerAdapter;
 import pl.hypeapp.endoscope.presenter.StartStreamPresenter;
@@ -41,6 +34,14 @@ import pl.hypeapp.endoscope.receiver.WiFiStateChangeReceiver;
 import pl.hypeapp.endoscope.ui.listener.OnDotPageChangeListener;
 import pl.hypeapp.endoscope.util.SettingsPreferencesUtil;
 import pl.hypeapp.endoscope.view.StartStreamView;
+
+import java.util.List;
+import java.util.Locale;
+
+import butterknife.BindView;
+import butterknife.BindViews;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class StartStreamActivity extends TiActivity<StartStreamPresenter, StartStreamView> implements StartStreamView,
         SurfaceHolder.Callback, Session.Callback {

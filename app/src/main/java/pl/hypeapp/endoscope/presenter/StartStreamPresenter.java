@@ -3,23 +3,24 @@ package pl.hypeapp.endoscope.presenter;
 import android.Manifest;
 import android.support.annotation.NonNull;
 
-import com.tbruyelle.rxpermissions.Permission;
-import com.tbruyelle.rxpermissions.RxPermissions;
+import com.tbruyelle.rxpermissions2.Permission;
+import com.tbruyelle.rxpermissions2.RxPermissions;
 
 import net.grandcentrix.thirtyinch.TiPresenter;
-import net.grandcentrix.thirtyinch.rx.RxTiPresenterSubscriptionHandler;
-import net.grandcentrix.thirtyinch.rx.RxTiPresenterUtils;
+import net.grandcentrix.thirtyinch.rx2.RxTiPresenterDisposableHandler;
 import net.majorkernelpanic.streaming.rtsp.RtspServer;
 
 import pl.hypeapp.endoscope.view.StartStreamView;
-import rx.functions.Action1;
+
+import io.reactivex.functions.Consumer;
+
 
 public class StartStreamPresenter extends TiPresenter<StartStreamView> implements RtspServer.CallbackListener {
     private static final String CAMERA_PERMISSION = Manifest.permission.CAMERA;
     private static final String RECORD_AUDIO_PERMISSION = Manifest.permission.RECORD_AUDIO;
     private static final String RTSP_SERVER_ERROR = "RTSP SERVER ERROR ";
     private static final int RTSP_STREAM_CONNECTING = 0;
-    private final RxTiPresenterSubscriptionHandler rxHelper = new RxTiPresenterSubscriptionHandler(this);
+    private final RxTiPresenterDisposableHandler rxHelper = new RxTiPresenterDisposableHandler(this);
     private final RxPermissions rxPermissions;
     private RtspServer rtspServer;
 
@@ -78,11 +79,10 @@ public class StartStreamPresenter extends TiPresenter<StartStreamView> implement
     }
 
     private void askForCameraPermission() {
-        rxHelper.manageSubscription(rxPermissions.requestEach(CAMERA_PERMISSION, RECORD_AUDIO_PERMISSION)
-                .compose(RxTiPresenterUtils.<Permission>deliverLatestToView(this))
-                .subscribe(new Action1<Permission>() {
+        rxHelper.manageDisposable(rxPermissions.requestEach(CAMERA_PERMISSION, RECORD_AUDIO_PERMISSION)
+                .subscribe(new Consumer<Permission>() {
                     @Override
-                    public void call(Permission permission) {
+                    public void accept(Permission permission) throws Exception {
                         if (permission.granted) {
 
                         } else if (permission.shouldShowRequestPermissionRationale) {

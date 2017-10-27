@@ -1,15 +1,15 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion "25.0.2"
+    compileSdkVersion 27
+    buildToolsVersion "26.0.2"
 
     defaultConfig {
         applicationId "pl.hypeapp.endoscope"
-        minSdkVersion 16
-        targetSdkVersion 25
+        minSdkVersion 19
+        targetSdkVersion 27
         versionCode 5
-        versionName "1.4"
+        versionName "0.1"
         multiDexEnabled true
     }
     buildTypes {
@@ -19,15 +19,15 @@ android {
     }
 }
 
-def androidSupportAppcompatVersion = '25.2.0'
-def androidSupportVersion = '25.2.0'
+def androidSupportAppcompatVersion = '27.0.0'
+def androidSupportVersion = '27.0.0'
 def hanksSmallbangVersion = '0.1.2'
-def qrCodeReaderViewVersion = '2.0.1'
-def rxPermissionVersion = '0.9.1@aar'
-def thirtyinchVersion = '0.8.0-rc3'
-def butterKnifeVersion = '8.5.1'
-def rxJavaVersion = '1.2.7'
-def rxAndroidVersion = '1.2.1'
+def qrCodeReaderViewVersion = '2.0.2'
+def rxPermissionVersion = '0.9.4@aar'
+def thirtyinchVersion = '0.8.5'
+def butterKnifeVersion = '8.8.1'
+def rxJavaVersion = '2.1.5'
+def rxAndroidVersion = '2.0.1'
 
 dependencies {
     annotationProcessor "com.jakewharton:butterknife-compiler:$butterKnifeVersion"
@@ -36,16 +36,21 @@ dependencies {
     compile "com.android.support:appcompat-v7:$androidSupportAppcompatVersion"
     compile "com.android.support:support-v4:$androidSupportVersion"
     compile "com.dlazaro66.qrcodereaderview:qrcodereaderview:$qrCodeReaderViewVersion"
-    compile('com.github.kenglxn.QRGen:android:2.2.0') {
+    compile('com.github.kenglxn.QRGen:android:2.3.0') {
         exclude group: 'com.google.zxing'
     }
     compile "com.jakewharton:butterknife:$butterKnifeVersion"
-    compile "com.tbruyelle.rxpermissions:rxpermissions:$rxPermissionVersion"
     compile "hanks.xyz:smallbang-library:$hanksSmallbangVersion"
-    compile "io.reactivex:rxandroid:$rxAndroidVersion"
-    compile "io.reactivex:rxjava:$rxJavaVersion"
+    compile "io.reactivex.rxjava2:rxandroid:$rxAndroidVersion"
+    compile "io.reactivex.rxjava2:rxjava:$rxJavaVersion"
+    compile "com.tbruyelle.rxpermissions2:rxpermissions:$rxPermissionVersion"
+
+    // MVP for activity and fragment
     compile "net.grandcentrix.thirtyinch:thirtyinch:$thirtyinchVersion"
-    compile "net.grandcentrix.thirtyinch:thirtyinch-rx:$thirtyinchVersion"
+    // rx2 extension
+    compile "net.grandcentrix.thirtyinch:thirtyinch-rx2:$thirtyinchVersion"
+
+
     testCompile 'junit:junit:4.12'
 }
 

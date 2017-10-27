@@ -1,22 +1,22 @@
 package pl.hypeapp.endoscope.presenter;
 
 import net.grandcentrix.thirtyinch.TiPresenter;
-import net.grandcentrix.thirtyinch.rx.RxTiPresenterSubscriptionHandler;
-import net.grandcentrix.thirtyinch.rx.RxTiPresenterUtils;
-
-import java.util.concurrent.TimeUnit;
+import net.grandcentrix.thirtyinch.rx2.RxTiPresenterDisposableHandler;
 
 import pl.hypeapp.endoscope.util.SettingsPreferencesUtil;
 import pl.hypeapp.endoscope.view.SplashScreenView;
-import rx.Observable;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action1;
-import rx.schedulers.Schedulers;
+
+import java.util.concurrent.TimeUnit;
+
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.functions.Consumer;
+import io.reactivex.schedulers.Schedulers;
 
 public class SplashScreenPresenter extends TiPresenter<SplashScreenView> {
     private static final long ANIMATION_DELAY = 3000;
     private static final long RUN_ACTIVITY_DELAY = 2000;
-    private final RxTiPresenterSubscriptionHandler rxHelper = new RxTiPresenterSubscriptionHandler(this);
+    private final RxTiPresenterDisposableHandler rxHelper = new RxTiPresenterDisposableHandler(this);
     private SettingsPreferencesUtil settingsPreferencesUtil;
 
     public SplashScreenPresenter(SettingsPreferencesUtil settingsPreferencesUtil) {
@@ -30,13 +30,12 @@ public class SplashScreenPresenter extends TiPresenter<SplashScreenView> {
     }
 
     public void delayRunActivity() {
-        rxHelper.manageSubscription(Observable.timer(RUN_ACTIVITY_DELAY, TimeUnit.MILLISECONDS)
-                .compose(RxTiPresenterUtils.<Long>deliverLatestToView(this))
+        rxHelper.manageDisposable(Observable.timer(RUN_ACTIVITY_DELAY, TimeUnit.MILLISECONDS)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Action1<Long>() {
+                .subscribe(new Consumer<Long>() {
                     @Override
-                    public void call(Long aLong) {
+                    public void accept(Long aLong) throws Exception {
                         intentToNextActivity();
                     }
                 })
@@ -54,13 +53,12 @@ public class SplashScreenPresenter extends TiPresenter<SplashScreenView> {
     }
 
     private void delaySplashAnimation(long delay) {
-        rxHelper.manageSubscription(Observable.timer(delay, TimeUnit.MILLISECONDS)
-                .compose(RxTiPresenterUtils.<Long>deliverLatestToView(this))
+        rxHelper.manageDisposable(Observable.timer(delay, TimeUnit.MILLISECONDS)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Action1<Long>() {
+                .subscribe(new Consumer<Long>() {
                     @Override
-                    public void call(Long aLong) {
+                    public void accept(Long aLong) throws Exception {
                         getView().startSplashAnimation();
                     }
                 })
